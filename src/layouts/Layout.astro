@@ -1,4 +1,38 @@
 ---
+import SITE_SETTINGS from '../settings/site-settings.json'
 
+const SITE_URL = import.meta.env.SITE
+const SITE_NAME = SITE_SETTINGS.siteName
+const SOCIAL = SITE_SETTINGS.social
+
+const { title, description, image, imageAlt, contentType, permalink, author } = Astro.props
 ---
 
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="description" content={description} />
+    <title>{title ? title + ' | ' + SITE_NAME : SITE_NAME}</title>
+
+    <!-- Open Graph  -->
+    <meta name="og:title" content={title || SITE_NAME} />
+    <meta name="og:type" content={contentType} />
+    <meta name="og:image" content={image} />
+    <meta name="og:image:alt" content={imageAlt} />
+    <meta name="og:url" content={permalink} />
+    <meta name="og:description" content={description} />
+    <meta name="og:site_name" content={SITE_NAME} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title || SITE_NAME} />
+    <meta name="twitter:description" content={description} />
+    {SOCIAL && <meta name="twitter:site" content={SOCIAL.twitterHandle} />}
+    {author && <meta name="twitter:creator" content={author.social.twitter} />}
+
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
